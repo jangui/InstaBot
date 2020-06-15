@@ -15,6 +15,7 @@ idna==2.9
 instapy==0.6.9
 jsonschema==2.6.0
 MeaningCloud-python==1.2.2
+pbr==5.4.5
 plyer==1.4.3
 protobuf==3.12.2
 pycparser==2.20
