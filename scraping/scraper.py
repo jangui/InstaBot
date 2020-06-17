@@ -6,7 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup as b
 from time import sleep, time
 
-from db import db, add_user
+from db import add_user
 from random import shuffle, seed
 
 seed(time())
@@ -137,7 +137,7 @@ def get_followers(account):
     if scrolls <= 3:
         print(f"taking long pause")
         pause = 600
-        session.browser.get(f'https://www.instagram.com/')
+        session.browser.get(f'https://www.google.com/') #take a break off instagram page
         return [], pause
     else:
         pause = 5

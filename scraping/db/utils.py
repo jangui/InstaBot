@@ -1,5 +1,6 @@
 from .models import db, Usernames, Techno, Doodle
 from sqlalchemy.sql import exists
+from sqlalchemy.exc import IntegrityError
 
 #label name -> object
 labels_dict = {
@@ -23,16 +24,19 @@ def add_labels(username, labels):
             print(f"{username} was not added to {label}, label does not exists")
 
 #add user to account table and into appropriate labels' tables
-def add_user(username, labels=[]):
+def add_user(username, labels):
     #check if in accounts table
-    if (Usernames.query.filter_by(username=username).first() == None):
-        user = Usernames(username=username)
-        db.session.add(user)
-        db.session.commit()
-        print(f"{username} added to database")
-        add_labels(username, labels)
-    else:
-        print(f"{username} not added, account already in database")
+    try:
+        if (Usernames.query.filter_by(username=username).first() == None):
+            user = Usernames(username=username)
+            db.session.add(user)
+            db.session.commit()
+            print(f"{username} added to database")
+            add_labels(username, labels)
+        else:
+            print(f"{username} not added, account already in database")
+    except IntegrityError:
+        db.session.rollback()
 
 #add users to account table that have labels associated w/ account
 def update_account(account_name):
@@ -63,50 +67,5 @@ def change_state(username, account_name):
         return
 
     acc = accounts_dict[account_name][0]
-    #todo
-
-
-
-"""
-    Queries database for people with a birthday on today's date
-    Returns dictionary where name is key and age is value
-    birthdays = Birthday.query.filter_by(
-        month = datetime.today().month,
-        day = datetime.today().day
-    ).all()
-
-    bds = {}
-    for bd in birthdays:
-        name = bd.first_name
-        if bd.last_name != '':
-            name += bd.last_name
-        if not bd.year:
-            age = ''
-        else:
-            age = datetime.today().year - bd.year
-        bds[name] = age
-    return bds;
-
-def add_birthday(first_name, last_name, day, month, year):
-    bd = Birthday(first_name=first_name, last_name=last_name,
-                    day=day, month=month, year=year
-                 )
-    db.session.add(bd)
-    db.session.commit()
-
-def update_birthday(first_name, last_name, day, month, year):
-    bd = Birthday.query.filter_by(first_name=first_name, last_name=last_name).first()
-    bd.day = day
-    bd.month = month
-    bd.year = year
-    db.session.commit()
-"""
-
-#add_user('jdeeee', ['techno', 'zine'])
-#add_user('jorge', ['techno'])
-
-#update_account('doodlerecords')
-
-
-
+    #TODO
 
