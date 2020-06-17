@@ -1,4 +1,4 @@
-from app import db
+from .app import db
 
 """
 The accounts tables keeps names of all accounts

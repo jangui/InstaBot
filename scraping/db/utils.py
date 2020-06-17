@@ -1,4 +1,4 @@
-from models import db, Usernames, Techno, Doodle
+from .models import db, Usernames, Techno, Doodle
 from sqlalchemy.sql import exists
 
 #label name -> object
